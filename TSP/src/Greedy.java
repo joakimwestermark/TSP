@@ -2,15 +2,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-
-
 public class Greedy{
 	
 	Greedy(){
 		
 	}
 	
-	public static int[] findTour(ArrayList allNodes, int l){
+	public static int[] findTour(ArrayList<Node> allNodes, int l){
 		int [] tour = new int[l];
 		boolean [] used = new boolean [l];
 		Arrays.fill(used, false);
@@ -25,6 +23,12 @@ public class Greedy{
 				}
 			}
 			tour[i] = best;
+			allNodes.get(i).changeT(best);
+//			allNodes.get(best).changeT(i);
+			//System.out.println(allNodes.get(i).getI()+ "turn: "+allNodes.get(i).getT());
+			
+			
+			
 //			System.out.println(best+" best");
 			used [best] = true; 
 			
@@ -32,12 +36,13 @@ public class Greedy{
 		return tour;
 	}
 	
-	public static int dist(int p1, int p2, ArrayList a){
-		Node first = (Node) a.get(p1);
-		Node second = (Node) a.get(p2);
+	public static int dist(int p1, int p2, ArrayList<Node> a){
+		Node first = a.get(p1);
+		Node second = a.get(p2);
 		double x = first.getX() - second.getX();
 		double y = first.getY() - second.getY();
 		double d = Math.sqrt(Math.pow(x,2)+Math.pow(y, 2));
+		
 		d = Math.round(d);
 		int newD = (int) d;
 		return newD; 

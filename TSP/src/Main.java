@@ -18,7 +18,7 @@ public class Main extends Greedy{
 		for (int i = 0; i < length; i++) {
 			double x = io.getDouble();
 			double y = io.getDouble();
-			Node n = new Node(x,y);
+			Node n = new Node(x,y, 0, i);
 			//System.out.println(n.getX());
 			allNodes.add(n);
 			//System.out.println(allNodes.size());
