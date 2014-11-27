@@ -1,5 +1,5 @@
 
 public abstract class Global {
-	public static int[][] x;
-	int y = 0;
+	public static int[][] distanceMatrix;
+	public static int length;
 }

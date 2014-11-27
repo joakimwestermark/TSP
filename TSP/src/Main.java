@@ -8,22 +8,24 @@ import java.util.ArrayList;
 public class Main extends Greedy{
 
 	static ArrayList <Node> allNodes = new ArrayList<Node>();
-	static int length; 
 	
 	public static void main (String [] args) throws NumberFormatException, IOException{
 
 //		####KATTIO####
 		Kattio io = new Kattio(System.in, System.out);
-		length = io.getInt();
-		for (int i = 0; i < length; i++) {
+		Global.length = io.getInt();
+		Global.distanceMatrix = new int[Global.length][Global.length];
+		for (int i = 0; i < Global.length; i++) {
 			double x = io.getDouble();
 			double y = io.getDouble();
 			Node n = new Node(x,y, 0, i);
 			//System.out.println(n.getX());
 			allNodes.add(n);
 			//System.out.println(allNodes.size());
-			
 		}
+		
+		dist(allNodes);
+		
 		//System.out.println(allNodes.size());
 //		BufferedReader in = new BufferedReader(new FileReader("input.txt"));
 //		for (String line = in.readLine(); line != null; line = in.readLine()) {
@@ -39,7 +41,7 @@ public class Main extends Greedy{
 //        }
 
 		
-		int[] tour = findTour(allNodes, length);
+		int[] tour = findTour(allNodes);
 		for (int i = 0; i < tour.length; i++) {
 			io.println(tour[i]);
 //			if(i <tour.length-2){
