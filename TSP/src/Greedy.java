@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Greedy{
+public class Greedy extends OPT2{
 	
 	Greedy(){
 		
@@ -26,15 +26,47 @@ public class Greedy{
 			}
 			tour[i] = best;
 			allNodes.get(i).changeT(best);
+//			System.out.println(allNodes.get(i).getT()+" T");
 //			allNodes.get(best).changeT(i);
 			//System.out.println(allNodes.get(i).getI()+ "turn: "+allNodes.get(i).getT());
 			
-			
+//			System.out.println(allNodes.get(0).getT());
+//			System.out.println(allNodes.get(1).getT());
 			
 //			System.out.println(best+" best");
 			used [best] = true; 
 			
 		}
+		int finalDist=0;
+//		ArrayList<Node> tmpAllNodes = new ArrayList<Node>();
+		
+		for (int o = 0; o < 9; o++) {
+			int before = totalDistance(allNodes);
+//			System.out.println(before +" before");
+//			tmpAllNodes = replaceEdge2(allNodes);
+			allNodes = replaceEdge2(allNodes);
+			int after = totalDistance(allNodes);
+//			System.out.println(after + " after");
+			if (before>after){
+//				for (int i = 0; i < allNodes.size(); i++) {
+//					allNodes.set(i, tmpAllNodes.get(i));
+//				}
+//				System.out.println("hej");
+				finalDist = totalDistance(allNodes);
+				for (int i = 0; i < allNodes.size(); i++) {
+					tour[i]=allNodes.get(i).getT();
+				}		
+			}
+//			for (int j = 0; j < tour.length; j++) {
+//				System.out.println(tour[j]);
+//			}
+//			System.out.println(after);
+//			System.out.println(o);
+//			System.out.println("");
+		}
+		
+//		int finalDist = totalDistance(allNodes);
+//		System.out.println(finalDist);
 		return tour;
 	}
 	
@@ -59,6 +91,7 @@ public class Greedy{
 //			}
 //			System.out.println("");
 //		}
+		
 		/*Node first = a.get(p1);
 		Node second = a.get(p2);
 		double x = first.getX() - second.getX();
@@ -70,6 +103,15 @@ public class Greedy{
 			
 		}*/
 		
+	}
+	
+	public static int totalDistance(ArrayList<Node> allNodes){
+		int sum = 0;
+		for (int i = 0; i < allNodes.size()-1; i++) {
+			sum+=Global.distanceMatrix[allNodes.get(i).getT()][allNodes.get(i+1).getT()];			
+		}
+		//System.out.println(sum+" total distance");
+		return sum;
 	}
 	
 
