@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class Main extends Greedy{
+public class Main{
 
-	static ArrayList <Node> allNodes = new ArrayList<Node>();
+	//static ArrayList <Node> allNodes = new ArrayList<Node>();
 	
 	public static void main (String [] args) throws NumberFormatException, IOException{
 
@@ -15,16 +15,18 @@ public class Main extends Greedy{
 		Kattio io = new Kattio(System.in, System.out);
 		Global.length = io.getInt();
 		Global.distanceMatrix = new int[Global.length][Global.length];
+		Global.allNodes  = new ArrayList<Node>();
+		
 		for (int i = 0; i < Global.length; i++) {
 			double x = io.getDouble();
 			double y = io.getDouble();
-			Node n = new Node(x,y, 0, i);
+			Node n = new Node(x,y, 0, i,0,0);
 			//System.out.println(n.getX());
-			allNodes.add(n);
+			Global.allNodes.add(n);
 			//System.out.println(allNodes.size());
 		}
 		
-		dist(allNodes);
+		Greedy.dist(Global.allNodes);
 		
 		//System.out.println(allNodes.size());
 //		BufferedReader in = new BufferedReader(new FileReader("input.txt"));
@@ -41,7 +43,12 @@ public class Main extends Greedy{
 //        }
 
 		
-		int[] tour = findTour(allNodes);
+		int[] tour = Greedy.findTour(Global.allNodes);
+		
+		for (int i = 0; i < Global.allNodes.size(); i++) {
+			System.out.println(Global.allNodes.get(i).getT()+" Teeee    "+Global.allNodes.get(i).getI()+" I");
+		}
+		
 		for (int i = 0; i < tour.length; i++) {
 			io.println(tour[i]);
 //			if(i <tour.length-2){
@@ -52,8 +59,8 @@ public class Main extends Greedy{
 //			}
 //			System.out.println(tour[i]);
 		}
+		
         io.close();
-
 	}
 	
 	
