@@ -50,8 +50,6 @@ public class GUI extends JPanel{
         	g2.fillOval(x1, y1, 10, 10);
         	String s = ""+Global.allNodes[i].getNameID();
         	g2.drawString(s,x1, y1);
-        	String s2 = ""+Global.originalDist;
-        	g2.drawString(s2, 450, 450);
     	}
     }
 }

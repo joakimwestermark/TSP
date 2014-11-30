@@ -30,38 +30,31 @@ public class Greedy{
 			used [best] = true; 
 			
 		}
-//		for (int i = 0; i < Global.length; i++) {
-//			System.out.println(Global.allNodes[i].getNameID());
-//			System.out.println(Global.allNodes[i].getPrev()+ " prev");
-//			System.out.println(Global.allNodes[i].getNext()+ " next");
-//			System.out.println("");
-//		}
 		Global.allNodes[Global.length-1].setNext(Global.allNodes[0].getNameID()); //IS THIS OKEY?!?
-		totalDistance();
-		String [] s = new String[1];
-		s[0] = "First";
-        GUI.main(s);
+//		totalDistance();
+//		String [] s = new String[1];
+//		s[0] = "First";
+//        GUI.main(s);
         
-        Scanner user_input = new Scanner( System.in );
-        String first_name = user_input.next();
+//        Scanner user_input = new Scanner( System.in );
+//        String first_name = user_input.next();
 
 
-		for (int i = 0; i < 1; i++) {
-			OPT2new.replaceEdge2();
-		}
+		OPT2new.replaceEdge2();
+
+		
+//		totalDistance();
+//		String [] s2 = new String[1];
+//		s2[0] = "Second";
+//        GUI.main(s2);
+
+//		for (int i = 0; i < Global.length; i++) {
+//			tour[i]=Global.allNodes[i].getNameID();
+//		}
 		
 		totalDistance();
-		String [] s2 = new String[1];
-		s2[0] = "Second";
-        GUI.main(s2);
-
-		for (int i = 0; i < Global.length; i++) {
-			tour[i]=Global.allNodes[i].getNameID();
-		}
-		
-		totalDistance();
-		createTourList();
-		return tour;
+		int [] tourL = createTourList();
+		return tourL;
 	}
 	
 	public static void dist(){
@@ -78,7 +71,12 @@ public class Greedy{
 			bestValue.add(Integer.MAX_VALUE-4);
 			bestValue.add(Integer.MAX_VALUE-5);
 			bestValue.add(Integer.MAX_VALUE-6);
+			bestValue.add(Integer.MAX_VALUE-6);
+			bestValue.add(Integer.MAX_VALUE-6);
+			
+
 			HashMap<Integer, Integer> hash = new HashMap<Integer, Integer>();
+//			int[] getValue = new int [Global.allNodes.length];
 			for (int j = 0; j <Global.allNodes.length; j++) {
 				Node n2 = Global.allNodes[j];
 				double x = n1.getX() - n2.getX();
@@ -90,10 +88,16 @@ public class Greedy{
 					bestValue.add(newD);
 					Collections.sort(bestValue);
 					bestValue.remove(bestValue.size()-1);
-					hash.put(newD, j);
+//					getValue [newD] = j; 
+					if(bestValue.contains(newD)){
+						hash.put(newD, j);						
+					}
 				}
 				Global.distanceMatrix[i][j] = newD;	
 			}
+//			for (int j = 0; j < bestValue.size(); j++) {
+//				hash.put(bestValue.get(j),getValue[bestValue.get(j)]);
+//			}
 			Global.indexKiller.add(hash);
 			Global.cN.add(bestValue);
 		}
@@ -102,51 +106,29 @@ public class Greedy{
 	}
 	
 	public static void totalDistance(){
-		int sum = 0;
-		int current = 0;
-		int next = 0;
-		for (int i = 0; i < Global.length; i++) {
-			current = Global.allNodes[next].getNameID();
-			next = Global.allNodes[current].getNext();
-			sum+=Global.distanceMatrix[current][next];
-			System.out.println("summa: "+sum+"  current: "+current+"  next: "+next);
-			
-			
-		}
-		System.out.println(Global.distanceMatrix[0][7]+" matrix from 0 to 7");
-		System.out.println(sum + " sum");
-		
-			
+			int sum = 0;
+			int current = 0;
+			int next = 0;
+			for (int i = 0; i < Global.length; i++) {
+				current = Global.allNodes[Global.fromItoT[current]].getNameID();
+				next = Global.allNodes[Global.fromItoT[current]].getNext();
+				sum += Global.distanceMatrix[current][next];
+				current = next;
+			}
+			//System.out.println("the sum is: "+sum);
 	}
 	
-	public static void createTourList(){
+	public static int[] createTourList(){
 		int[] tourList = new int[Global.length];
 		int next = 0;
-		System.out.println("THE TOUR LIST");
-//		for (int i = 0; i < Global.length; i++) {
-//			Node n = Global.allNodes[next];
-//			tourList[i] = n.getNameID(); 
-//			next = n.getNext();
-//			System.out.println(tourList[i]);
-//			
-////			System.out.println(next);
-//			next = Global.allNodes[Global.fromItoT[Global.allNodes[next].getNext()]].getNameID();
-//		}
-		for(Node n:Global.allNodes){
-			System.out.println(n.getNext()+" next     "+n.getNameID()+" Name     "+n.getPrev()+" prev");
-		}
-		HashMap<Integer,Integer> visited = new HashMap<Integer, Integer>();
 		for (int i = 0; i < Global.length; i++) {
-			System.out.println(next);
-//			if(visited.containsKey(next)){
-//				next = Global.allNodes[Global.fromItoT[next]].getPrev();
-//			}else{
-				next = Global.allNodes[Global.fromItoT[next]].getNext();				
-//			}
-//			visited.put(next, next);
+			tourList[i]=next;
+//			io.println(next);
+			next = Global.allNodes[Global.fromItoT[next]].getNext();				
 
 				
 		}
+		return tourList;
 	}
 	
 //	public static int totalDistance(){
