@@ -1,3 +1,7 @@
+import sun.awt.SunHints;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 public class OPT2new {
 	public static void replaceEdge2(){
@@ -5,23 +9,27 @@ public class OPT2new {
 		boolean noChange = false;
 		while (!noChange) {
 			counter++;
+            System.out.print(counter+" counter");
 			if(counter>50){
 				break;				
 			}
 			noChange = true;
-			for (int i = 0; i < Global.length-1; i++) {
+			for (int i = 0; i < Global.theTour.length-1; i++) { //change numbers of iterations
+                int n1 = Global.theTour[i];
+                int n2 = Global.theTour[i+1];
 				for (int j = 0; j < Global.cN.get(0).size(); j++) {
-					int neighbour = Global.indexKiller.get(Global.allNodes[i].getNameID()).get(Global.cN.get(Global.allNodes[i].getNameID()).get(j));
-					System.out.println(i+" "+Global.allNodes[i].getNext()+" "+neighbour+" "+Global.allNodes[neighbour].getNext()+" them shits EARLY");
-					
-					if (compute(i, neighbour)) {
-						int x = i;
-						int y = Global.allNodes[Global.fromItoT[i]].getNext();
-						int a = neighbour;
-						int b = Global.allNodes[Global.fromItoT[neighbour]].getNext();
-						if(a!=b && a!=x && a!=y && x!=y && b!=x && b!=y){
-							swapLIKEaFUCKINGswapSHOULDswapNOWplease(x,y,a,b);
-							fixDirection();
+					int n3 = Global.indexKiller.get(Global.allNodes[n1].getNameID()).get(Global.cN.get(Global.allNodes[n1].getNameID()).get(j));
+					//System.out.println(i+" "+Global.allNodes[i].getNext()+" "+neighbour+" "+Global.allNodes[neighbour].getNext()+" them shits EARLY");
+					if (compute(n1, n3)) {
+                        int n4 = 0;
+                        for (int k = 0; k < Global.theTour.length; k++) {
+                            if(Global.theTour[k]==n3){
+                                n4 = Global.theTour[(k+1)%Global.theTour.length];
+                            }
+                        }
+                        if(n3!=n4 && n3!=n1 && n3!=n2 && n1!=n2 && n4!=n1 && n4!=n2){
+                            //System.out.println("hej hej"+ counter);
+							flipEdges(n1, n2, n3, n4);
 							noChange = false;	
 //							break;
 						}
@@ -34,6 +42,71 @@ public class OPT2new {
 			}
 		}
 	}
+
+    public static void flipEdges(int n1, int n2, int n3, int n4){
+        System.out.println("n1 = "+n1+ "      n2= "+n2+"       n3= "+n3+ "          n4= "+n4);
+
+        /*for (int j = 0; j < Global.theTour.length ; j++) {
+            System.out.print(Global.theTour[j]+" ,");
+        }
+        System.out.println("");*/
+        //System.out.println("Flipping some edges");
+        //n1 och n4 ska flippa kanter
+        int indexN2 = 0;
+        int indexN3 = 0;
+        boolean check1 = true;
+        boolean check2 = true;
+        int i = 0;
+        while ((check1 && check2) || (!check1 && check2) || (check1 && !check2)) {
+            if(Global.theTour[i%Global.length]==n2){
+                indexN2 = i;
+                check1 = false;
+            }else if (Global.theTour[i%Global.length]==n3){
+                indexN3 = i;
+                check2 = false;
+            }
+            i++;
+        }
+        int [] tmp = new int[Math.abs(indexN3-indexN2)+1];
+        if(indexN2<indexN3){
+           tmp = Arrays.copyOfRange(Global.theTour, (indexN2)%Global.length,(indexN3+1)%Global.length);
+           System.out.println(Arrays.toString(tmp));
+           tmp = reverseTour(tmp);
+            System.out.println(Arrays.toString(tmp));
+           for (int j = 0; j < tmp.length; j++) {
+                Global.theTour[indexN2+j] = tmp[j];
+           }
+        }
+        if(indexN3<indexN2){
+            tmp = Arrays.copyOfRange(Global.theTour, (indexN3+1)%Global.length,(indexN2)%Global.length);
+            System.out.println(Arrays.toString(tmp));
+            tmp = reverseTour(tmp);
+            System.out.println(Arrays.toString(tmp));
+            for (int j = 0; j < tmp.length; j++) {
+                Global.theTour[indexN3+j] = tmp[j];
+            }
+        }
+        /*System.out.println("AAAAAFFFTTTTEEEERRRRR");
+        for (int j = 0; j < tmp.length ; j++) {
+            System.out.print(tmp[j]+" ,");
+        }
+        System.out.println("TMP");
+
+        for (int j = 0; j < Global.theTour.length ; j++) {
+            System.out.print(Global.theTour[j]+" ,");
+        }
+        System.out.println("THE TOUR");*/
+
+    }
+
+    public static int[] reverseTour(int[] tmp){
+        int [] tmp2 = new int[tmp.length];
+        for (int i = 0; i <tmp.length; i++) {
+            tmp2[i] = tmp[tmp.length-i-1];
+        }
+        return tmp2;
+    }
+
 	public static void fixDirection(){
 		for (int i = 0; i < Global.length; i++) {
 			int next = Global.allNodes[Global.fromItoT[i]].getNext();
@@ -46,12 +119,7 @@ public class OPT2new {
 		}
 	}
 	public static void swapLIKEaFUCKINGswapSHOULDswapNOWplease(int x, int y, int a, int b){
-//	public void swap(int x, int y, int a, int b) {
-			System.out.println(x+" "+y+" "+a+" "+b+" them shits");
-			System.out.println("name n1: "+Global.allNodes[Global.fromItoT[x]].getNameID()+" n2: "+Global.allNodes[Global.fromItoT[y]].getNameID()+" n3: "+Global.allNodes[Global.fromItoT[a]].getNameID()+" n4: "+Global.allNodes[Global.fromItoT[b]].getNameID());
-			System.out.println("prev n1: "+Global.allNodes[Global.fromItoT[x]].getPrev()+" n2: "+Global.allNodes[Global.fromItoT[y]].getPrev()+" n3: "+Global.allNodes[Global.fromItoT[a]].getPrev()+" n4: "+Global.allNodes[Global.fromItoT[b]].getPrev());
-			System.out.println("next n1: "+Global.allNodes[Global.fromItoT[x]].getNext()+" n2: "+Global.allNodes[Global.fromItoT[y]].getNext()+" n3: "+Global.allNodes[Global.fromItoT[a]].getNext()+" n4: "+Global.allNodes[Global.fromItoT[b]].getNext());
-			
+
 			int tmpPrev;
 			int tmpNext;
 //			System.out.println(Global.allNodes[Global.fromItoT[a]].getOrderID()+" nr1     "+Global.allNodes[Global.fromItoT[a]].getOrderID()+" nr2");
@@ -74,30 +142,22 @@ public class OPT2new {
 				
 				
 				Global.allNodes[Global.fromItoT[b]].setPrev(y);
-				
-//				Global.allNodes[Global.fromItoT[Global.allNodes[Global.fromItoT[a]].getNext()]].setPrev(Global.allNodes[Global.fromItoT[a]].getNameID()); //Get the n3s next node and set that nodes "prev" to n3s nameID
-//				Global.allNodes[Global.fromItoT[Global.allNodes[Global.fromItoT[a]].getNext()]].setNext(Global.allNodes[Global.fromItoT[y]].getNameID());
-				
-				
-				System.out.println("***************************");
-				System.out.println("name n1: "+Global.allNodes[Global.fromItoT[x]].getNameID()+" n2: "+Global.allNodes[Global.fromItoT[y]].getNameID()+" n3: "+Global.allNodes[Global.fromItoT[a]].getNameID()+" n4: "+Global.allNodes[Global.fromItoT[b]].getNameID());
-				System.out.println("prev n1: "+Global.allNodes[Global.fromItoT[x]].getPrev()+" n2: "+Global.allNodes[Global.fromItoT[y]].getPrev()+" n3: "+Global.allNodes[Global.fromItoT[a]].getPrev()+" n4: "+Global.allNodes[Global.fromItoT[b]].getPrev());
-				System.out.println("next n1: "+Global.allNodes[Global.fromItoT[x]].getNext()+" n2: "+Global.allNodes[Global.fromItoT[y]].getNext()+" n3: "+Global.allNodes[Global.fromItoT[a]].getNext()+" n4: "+Global.allNodes[Global.fromItoT[b]].getNext());
-			
-				Greedy.createTourList();
+
 			}
 				
 
 	}
 	public static boolean compute(int x, int a){
-		int y = Global.allNodes[Global.fromItoT[x]].getNext();
-		int b = Global.allNodes[Global.fromItoT[a]].getNext();
+        int y = Global.theTour[(x+1)%Global.length];
+        int b = Global.theTour[(a+1)%Global.length];
+		//int y = Global.allNodes[Global.fromItoT[x]].getNext();
+		//int b = Global.allNodes[Global.fromItoT[a]].getNext();
 
 		int oldDistance = Global.distanceMatrix[x][y] + Global.distanceMatrix[a][b];
 		int newDistance = Global.distanceMatrix[x][a] + Global.distanceMatrix[y][b];
 		
 		if (newDistance < oldDistance) {
-			System.out.println("newDist: "+ newDistance+"   oldDist: "+oldDistance);
+			//System.out.println("newDist: "+ newDistance+"   oldDist: "+oldDistance);
 			return true;
 		}
 

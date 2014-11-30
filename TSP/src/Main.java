@@ -16,6 +16,7 @@ public class Main{
 		Global.length = io.getInt();
 		Global.distanceMatrix = new int[Global.length][Global.length];
 		Global.allNodes  = new Node[Global.length];
+        Global.theTour = new int[Global.length];
 		
 		for (int i = 0; i < Global.length; i++) {
 			double x = io.getDouble();
@@ -32,9 +33,9 @@ public class Main{
 		
 		int[] tour = Greedy.findTour();
 		
-		for (int i = 0; i < Global.length; i++) {
+		/*for (int i = 0; i < Global.length; i++) {
 			System.out.println(Global.allNodes[i].getNameID()+" Teeee    "+Global.allNodes[i].getOrderID()+" I");
-		}
+		}*/
 		
 		for (int i = 0; i < tour.length; i++) {
 			io.println(tour[i]);

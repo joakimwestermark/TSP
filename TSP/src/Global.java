@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 
 public abstract class Global {
+    public static int [] theTour;
 	public static int[][] distanceMatrix;
 	public static int length;
 	public static int originalDist;
