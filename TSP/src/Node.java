@@ -2,30 +2,30 @@
 public class Node {
 	double x;
 	double y; 
-	int turn; 
-	int input; 
+	int nameID; 
+	int orderID; 
 	int prev;
 	int next;
 	
-	Node(double a, double b, int t, int i, int p, int n){
-		turn = t; 
-		input = i; 
-		x = a; 
-		y = b; 
+	Node(double xx, double yy, int nID, int oID, int p, int n){
+		nameID = nID; 
+		orderID = oID; 
+		x = xx; 
+		y = yy; 
 		prev = p;
 		next = n;
 	}
 	public int getPrev(){
 		return prev;
 	}
-	public void setPrev(int q){
-		prev = q;
+	public void setPrev(int p){
+		prev = p;
 	}
 	public int getNext(){
 		return next;
 	}
-	public void setNext(int q){
-		next = q;
+	public void setNext(int n){
+		next = n;
 	}
 	public double getX(){
 		return x;
@@ -35,18 +35,18 @@ public class Node {
 		return y; 
 	}
 	
-	public int getT(){
-		return turn; 
+	public int getNameID(){
+		return nameID; 
 	}
 	
-	public void changeT(int b){
-		turn = b; 
+	public void changeNameID(int n){
+		nameID = n; 
 	}
 	
-	public int getI(){
-		return input; 
+	public int getOrderID(){
+		return orderID; 
 	}
-	public void changeI(int b){
-		input = b; 
+	public void changeOrderID(int o){
+		orderID = o; 
 	}
 }

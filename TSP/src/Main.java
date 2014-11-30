@@ -15,49 +15,29 @@ public class Main{
 		Kattio io = new Kattio(System.in, System.out);
 		Global.length = io.getInt();
 		Global.distanceMatrix = new int[Global.length][Global.length];
-		Global.allNodes  = new ArrayList<Node>();
+		Global.allNodes  = new Node[Global.length];
 		
 		for (int i = 0; i < Global.length; i++) {
 			double x = io.getDouble();
 			double y = io.getDouble();
-			Node n = new Node(x,y, 0, i,0,0);
+			Node n = new Node(x,y, 0, i,0,0); //	Node(double xx, double yy, int nID, int oID, int p, int n)
 			//System.out.println(n.getX());
-			Global.allNodes.add(n);
+//			Global.allNodes.add(n);
+			Global.allNodes[i]=n; //Nodes get the same index as their nameID
 			//System.out.println(allNodes.size());
 		}
 		
-		Greedy.dist(Global.allNodes);
+		Greedy.dist();
 		
-		//System.out.println(allNodes.size());
-//		BufferedReader in = new BufferedReader(new FileReader("input.txt"));
-//		for (String line = in.readLine(); line != null; line = in.readLine()) {
-//            String [] s = line.split(" ");
-//            if(s.length==1){
-//            	length=Integer.parseInt(s[0]);
-//            }else{
-//            	double x = Double.parseDouble(s[0]);
-//            	double y = Double.parseDouble(s[1]);
-//            	Node n = new Node(x,y);
-//            	allNodes.add(n);            	
-//            }
-//        }
-
 		
-		int[] tour = Greedy.findTour(Global.allNodes);
+		int[] tour = Greedy.findTour();
 		
-		for (int i = 0; i < Global.allNodes.size(); i++) {
-			System.out.println(Global.allNodes.get(i).getT()+" Teeee    "+Global.allNodes.get(i).getI()+" I");
+		for (int i = 0; i < Global.length; i++) {
+			System.out.println(Global.allNodes[i].getNameID()+" Teeee    "+Global.allNodes[i].getOrderID()+" I");
 		}
 		
 		for (int i = 0; i < tour.length; i++) {
 			io.println(tour[i]);
-//			if(i <tour.length-2){
-//				io.println(tour[i]);
-//			}
-//			else{
-//				io.print(tour[i]);
-//			}
-//			System.out.println(tour[i]);
 		}
 		
         io.close();

@@ -3,33 +3,37 @@ import java.util.Collections;
 
 
 public class OPT2 {
-public static ArrayList<Node> replaceEdge2(ArrayList<Node> allNodes){
+public static void replaceEdge2(){
 		
-		for (int i = 0; i < 0; i++) {
-			for (int j = 0; j < allNodes.size()-1; j++) {
-				Node n1 = allNodes.get(j);
-				Node n2 = allNodes.get(j+1);
-				System.out.println(n1.getT()+" n1      "+n2.getT()+ " n2");
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < Global.length-1; j++) {
+				System.out.println(j+"  JJJJJJJJJJJJJJJJJJJJJJJJJ");
+				Node n1 = Global.allNodes[j];
+				Node n2 = Global.allNodes[j+1];
+				System.out.println(n1.getNameID()+" n1      "+n2.getNameID()+ " n2");
 				Node n3= null; 
 				Node n4 = null;
 				int flag = 0;
 				for (int k = 0; k < Global.cN.get(0).size(); k++) {
 					flag = 0;
-					int neighbour = Global.indexKiller.get(n1.getT()).get(Global.cN.get(n1.getT()).get(k));
+					int neighbour = Global.indexKiller.get(n1.getNameID()).get(Global.cN.get(n1.getNameID()).get(k));
 					System.out.println(neighbour+" neighbobob");
-					n3 = allNodes.get(Global.fromItoT[neighbour]);
-					n4 = (allNodes.get(n3.getI()+1)); 
-					System.out.println(n3.getPrev()+" n3 prev");
-					System.out.println(n3.getNext()+" n3 next");
-					System.out.println(n3.getT()+" n3    "+ n4.getT()+" n4");
-					int dist1 = Global.distanceMatrix[n1.getT()][n2.getT()];
-					int dist2 = Global.distanceMatrix[n3.getT()][n4.getT()];
-					int newDist1 = Global.distanceMatrix[n1.getT()][n3.getT()];
-					int newDist2 = Global.distanceMatrix[n2.getT()][n4.getT()];
+					n3 = Global.allNodes[Global.fromItoT[neighbour]];
+					n4 = (Global.allNodes[(n3.getOrderID()+1)%Global.length]); 
+					System.out.println(n4.getNext()+" n4s NEXT");
+					System.out.println(n4.getNameID()+ " the name of n4");
+//					System.out.println(n3.getPrev()+" n3 prev");
+//					System.out.println(n3.getNext()+" n3 next");
+//					System.out.println(n3.getNameID()+" n3    "+ n4.getNameID()+" n4");
+					
+					int dist1 = Global.distanceMatrix[n1.getNameID()][n2.getNameID()];
+					int dist2 = Global.distanceMatrix[n3.getNameID()][n4.getNameID()];
+					int newDist1 = Global.distanceMatrix[n1.getNameID()][n3.getNameID()];
+					int newDist2 = Global.distanceMatrix[n2.getNameID()][n4.getNameID()];
 					System.out.println((dist1+dist2)+" dist old     "+(newDist1+newDist2)+" dist new" );
-					System.out.println("n1: "+n1.getT()+" n2: "+n2.getT()+" n3: "+n3.getT()+" n4: "+n4.getT());
+					System.out.println("n1: "+n1.getNameID()+" n2: "+n2.getNameID()+" n3: "+n3.getNameID()+" n4: "+n4.getNameID());
 //					if(!(n2.getT()==n3.getT()) && (!(n1.getT()==n4.getT())&&!(n2.getT()==n3.getT())) && ((dist1+dist2)>(newDist1+newDist2))){
-					if(!(n2.getT()==n3.getT()) && (!(n1.getT()==n4.getT())&&!(n2.getT()==n3.getT())) && ((dist1+dist2)>(newDist1+newDist2))){
+					if(!(n2.getNameID()==n3.getNameID()) && (!(n1.getNameID()==n4.getNameID())&&!(n2.getNameID()==n3.getNameID())) && ((dist1+dist2)>(newDist1+newDist2))){
 						System.out.println("not here");
 						if(n2.equals(n3)){
 							System.out.println("print 1");
@@ -46,129 +50,71 @@ public static ArrayList<Node> replaceEdge2(ArrayList<Node> allNodes){
 				}
 //				if(n3!=null){
 				if(flag==0){
-					System.out.println(Greedy.totalDistance(allNodes)+" dist before flip");
-					allNodes = flipEdge(allNodes, n1, n2, n3, n4);
-					System.out.println(Greedy.totalDistance(allNodes)+" dist after flip");
+					Greedy.totalDistance();
+					flipEdge(n1, n2, n3, n4);
+					Greedy.totalDistance();
 					break;
 				}
 			}
 		}
-		
-	
-		//save closest neighbours när vi skapar matrisen 
-		//loopa iteration
-			//loopa igenom alla cn (hur många ska vi spara?
-				//x,y = första kanten = kant1, som finns i tour 
-				//kx1,ky1 = kant1:s closest neighbour
-				//x1,y1 = andra kanten = kant2, som finns i tour
-				//x1,closestNeighbour < x1,y1
-		
-	
-	
-	
-	/*int theBest = 0;
-		for (int i = 0; i < allNodes.size()-2; i++) {
-			for (int j = 0+i; j < allNodes.size()-2; j++) {
-				if(i!=j){
-					int improvement = compute(allNodes,i,j);
-					if(improvement>0){
-						allNodes = swapEdges(allNodes,i,j);
-//						break;
-					}else{
-												
-					}
-				}
-			}
-		}*/
-		return allNodes;
 	}
 
-	public static ArrayList<Node> flipEdge(ArrayList<Node> a, Node n1, Node n2, Node n3, Node n4){
-//		a.get(n2.getI()).changeT(n4.getT());
-//		a.get(n4.getI()).changeT(n2.getT());
+	public static void flipEdge(Node n1, Node n2, Node n3, Node n4){
 		
-//		System.out.println("flipper");
-//		int tmp = n2.getT();
-//		int tmp1 = n4.getT();
-//		n2.changeT(n4.getT());
-//		n4.changeT(tmp);
-//		Global.fromItoT[n4.getI()] = tmp;
-//		Global.fromItoT[n2.getI()] = tmp1;
-		
-		int tmp = n2.getT();
-		int tmp1 = n3.getT();
-		n2.changeT(n3.getT());
-		n3.changeT(tmp);
-		
-		Collections.swap(a, n3.getI(), n2.getI());
-//		int temp = n3.getI();
-//		n3.changeI(n2.getI());
-//		n2.changeI(temp);
-//		Node tempNode = n2;
-//		int n2I = n3.getI();
-//		int n3I = n3.getI();
-//		a.set(n2.getI(), n3);
-//		a.set(n3.getI(), tempNode);
-//		a.get(n2I).changeI(n3.getI());
-//		a.get(n3I).changeI(tempNode.getI());
-//		n2 = tempNode; 
-		
-//		Node tempNode = n2;
-//		a.set(n2.getI(), n3);
-//		a.set(n3.getI(), tempNode);
-//		a.get(tempNode.getI()).changeI(n3.getI());
-//		a.get(n3.getI()).changeI(tempNode.getI());
+//		for (int i = 0; i < Global.length; i++) {
+//			System.out.println(Global.allNodes[i].getNameID()+"hohohoh");
+//		}
 //		
-		Global.fromItoT[n3.getI()] = tmp;
-		Global.fromItoT[n2.getI()] = tmp1;
+		System.out.println("name n1: "+n1.getNameID()+" n2: "+n2.getNameID()+" n3: "+n3.getNameID()+" n4: "+n4.getNameID());
+		System.out.println("prev n1: "+n1.getPrev()+" n2: "+n2.getPrev()+" n3: "+n3.getPrev()+" n4: "+n4.getPrev());
+		System.out.println("next n1: "+n1.getNext()+" n2: "+n2.getNext()+" n3: "+n3.getNext()+" n4: "+n4.getNext());
+//		
+		int tmpPrev = n2.getPrev();
+		int tmpNext = n2.getNext();
 		
-		return a; 
+//		int tmpOrderID = n2.getOrderID();
+		
+		
+		
+		n2.setPrev(n3.getPrev());
+		n2.setNext(n3.getNext());
+		n3.setPrev(tmpPrev);
+		n3.setNext(tmpNext);
+		n1.setNext(n3.getNameID());
+		n4.setPrev(n2.getNameID());
+		
+//		n2.changeOrderID(n3.getOrderID());
+//		n3.changeOrderID(tmpOrderID);
+		
+		System.out.println(n4.getNext()+ "N4s NEXT WOOOOOOOOOOOOOOOOOOOW");
+		Global.allNodes[Global.fromItoT[n3.getNext()]].setPrev(n3.getNameID()); //Get the n3s next node and set that nodes "prev" to n3s nameID
+		Global.allNodes[Global.fromItoT[n3.getNext()]].setNext(n2.getNameID());
+		System.out.println(n4.getNext()+ "N4s NEXT WOOOOOOOOOOOOOOOOOOOW");
+		System.out.println(Global.allNodes[2].getNameID()+" bör bli 9");
+		
+//		Global.allNodes[Global.fromItoT[n3.getNext()]].setPrev(n3.getNameID()); //Get the n3s next node and set that nodes "prev" to n3s nameID
+//		Global.allNodes[Global.fromItoT[n3.getNext()]].setNext(n2.getNameID());
+//		
+//		Global.allNodes[Global.fromItoT[n2.getNext()]].setPrev(n2.getNameID());
+//		Global.allNodes[Global.fromItoT[n2.getNext()]].setNext(n4.getNext());
+//		
+		
+		System.out.println("********");
+		System.out.println("name n1: "+n1.getNameID()+" n2: "+n2.getNameID()+" n3: "+n3.getNameID()+" n4: "+n4.getNameID());
+		System.out.println("prev n1: "+n1.getPrev()+" n2: "+n2.getPrev()+" n3: "+n3.getPrev()+" n4: "+n4.getPrev());
+		System.out.println("next n1: "+n1.getNext()+" n2: "+n2.getNext()+" n3: "+n3.getNext()+" n4: "+n4.getNext());
+		System.out.println(n3.getNext()+"=n3getnext");
+		System.out.println(n2.getNext()+"=n2getnext");
+		System.out.println(Global.fromItoT[n3.getNext()]+" fromtoI n3getnext");
+		System.out.println(Global.fromItoT[n2.getNext()]+" fromtoI n2getnext");
+		System.out.println(Global.allNodes[Global.fromItoT[n3.getNext()]].getNameID()+"=3 om 3an ligger på 3ans 3a");
+		System.out.println(Global.allNodes[Global.fromItoT[n2.getNext()]].getNameID()+"=5 om 5an.... ");
+//		int tmp = n2.getNameID();
+//		int tmp1 = n3.getNameID();
+//		n2.changeNameID(n3.getNameID());
+//		n3.changeNameID(tmp);
+		
+		
 	}
 
-	public static ArrayList<Node> swapEdges(ArrayList<Node> allNodes,int i, int j){
-//		int tmp = allNodes.get(j).getT();
-//		allNodes.get(j).changeT(allNodes.get(j+2).getT());
-//		allNodes.get(j+2).changeT(tmp);
-		
-//		Global.distanceMatrix[allNodes.get(i).getT()][tmp] = Global.distanceMatrix[allNodes.get(i).getT()][allNodes.get(j+2).getT()];
-//		Global.distanceMatrix[allNodes.get(i).getT()][allNodes.get(j+2).getT()] = Global.distanceMatrix[allNodes.get(i).getT()][tmp];
-		
-//		int tmp = allNodes.get(j).getT();
-//		allNodes.get(j).changeT(allNodes.get(i+2).getT());
-//		allNodes.get(i+2).changeT(tmp);
-//		
-		
-		int tmp = allNodes.get(i+1).getT();
-		allNodes.get(i+1).changeT(allNodes.get(j+1).getT());
-		allNodes.get(j+1).changeT(tmp);
-		
-		
-//		
-//		Global.distanceMatrix[allNodes.get(i).getT()][tmp] = Global.distanceMatrix[allNodes.get(i).getT()][allNodes.get(i+2).getT()];
-//		Global.distanceMatrix[allNodes.get(i+2).getT()][allNodes.get(j+2).getT()] = Global.distanceMatrix[tmp][allNodes.get(j+2).getT()];
-		
-		return allNodes;
-	}
-	
-	public static int compute(ArrayList<Node> allNodes,int i, int j){
-		
-//		int from1 = allNodes.get(i).getT();
-//		int from2 = allNodes.get(i+2).getT();
-//		
-//		int to1 = allNodes.get(j).getT();
-//		int to2 = allNodes.get(j+2).getT();
-		
-		int from1 = allNodes.get(i).getT();
-		int from2 = allNodes.get(j+1).getT();
-		
-		int to1 = allNodes.get(i+1).getT();
-		int to2 = allNodes.get(j+2).getT();
-		
-		
-//		System.out.println(Global.distanceMatrix[from1][to1]+" 1");
-//		System.out.println(Global.distanceMatrix[from2][to2]+" 2");
-//		return (Global.distanceMatrix[from1][to1]+Global.distanceMatrix[from2][to2])-(Global.distanceMatrix[from1][to2]+Global.distanceMatrix[from2][to1]);
-		return (Global.distanceMatrix[from1][to1]+Global.distanceMatrix[from2][to2])-(Global.distanceMatrix[from1][from2]+Global.distanceMatrix[to1][to2]);
-		
-	}
 }

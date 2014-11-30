@@ -7,14 +7,10 @@ import java.util.Scanner;
 
 public class Greedy{
 	
-//	Greedy(){
-//		
-//	}
-	
-	public static int[] findTour(ArrayList<Node> allNodes){
+	public static int[] findTour(){
 		int [] tour = new int[Global.length];
 		boolean [] used = new boolean [Global.length];
-		Global.fromItoT = new int[allNodes.size()];
+		Global.fromItoT = new int[Global.allNodes.length];
 		Arrays.fill(used, false);
 		tour[0] = 0;
 		used [0] = true; 
@@ -22,38 +18,26 @@ public class Greedy{
 			int best = -1; 
 			for (int j = 0; j< Global.length; j++) {
 				if(!used[j] && (best==-1 || Global.distanceMatrix[tour[i-1]][j] < Global.distanceMatrix[tour[i-1]][best])){
-//					System.out.println("1: "+tour[i-1]+" "+j+"  2: "+tour[i-1]+" "+best);
-				//if(!used[j] && (best==-1 || dist(tour[i-1],j, allNodes)<dist(tour[i-1],best, allNodes))){
 					best = j; 
-					//System.out.println(best+" best");
 				}
 			}
 			Global.fromItoT[best] = i;
 			tour[i] = best;
-			allNodes.get(i).changeT(best);
-			allNodes.get((i+1)%Global.length).setPrev(best);
-			allNodes.get(i-1).setNext(best);
+			Global.allNodes[i].changeNameID(best);
+			Global.allNodes[(i+1)%Global.length].setPrev(best);
+			Global.allNodes[i-1].setNext(best);
 			
-			
-//			System.out.println(allNodes.get(i).getT()+" T");
-//			allNodes.get(best).changeT(i);
-			//System.out.println(allNodes.get(i).getI()+ "turn: "+allNodes.get(i).getT());
-			
-//			System.out.println(allNodes.get(0).getT());
-//			System.out.println(allNodes.get(1).getT());
-			
-//			System.out.println(best+" best");
 			used [best] = true; 
 			
 		}
-		for (int i = 0; i < Global.length; i++) {
-			System.out.println(allNodes.get(i).getT());
-			System.out.println(allNodes.get(i).getPrev()+ " prev");
-			System.out.println(allNodes.get(i).getNext()+ " next");
-			System.out.println("");
-		}
-		allNodes.get(Global.length-1).setNext(allNodes.get(0).getT()); //IS THIS OKEY?!?
-		Global.originalDist = totalDistance(allNodes);
+//		for (int i = 0; i < Global.length; i++) {
+//			System.out.println(Global.allNodes[i].getNameID());
+//			System.out.println(Global.allNodes[i].getPrev()+ " prev");
+//			System.out.println(Global.allNodes[i].getNext()+ " next");
+//			System.out.println("");
+//		}
+		Global.allNodes[Global.length-1].setNext(Global.allNodes[0].getNameID()); //IS THIS OKEY?!?
+		totalDistance();
 		String [] s = new String[1];
 		s[0] = "First";
         GUI.main(s);
@@ -63,79 +47,28 @@ public class Greedy{
 
 
 		for (int i = 0; i < 1; i++) {
-			OPT2.replaceEdge2(allNodes);
+			OPT2new.replaceEdge2();
 		}
 		
-		Global.originalDist = totalDistance(allNodes);
+		totalDistance();
 		String [] s2 = new String[1];
 		s2[0] = "Second";
         GUI.main(s2);
 
-		for (int i = 0; i < allNodes.size(); i++) {
-			tour[i]=allNodes.get(i).getT();
+		for (int i = 0; i < Global.length; i++) {
+			tour[i]=Global.allNodes[i].getNameID();
 		}
 		
-		int dist = totalDistance(allNodes);
-		System.out.println(dist+" the dist");
-//		int finalDist=0;
-//		ArrayList<Node> originalAllNodes = new ArrayList<Node>();
-//		Node n = new Node(1,1, 0, 1);
-////		for (int i = 0; i < allNodes.size(); i++) {
-////			originalAllNodes.add(n);
-////		}
-//		int before = 0;
-//		int originalDist = totalDistance(allNodes);
-//		originalAllNodes.addAll(allNodes);
-//		for (int i = 0; i < allNodes.size(); i++) {
-//			System.out.println(originalAllNodes.get(i).getT()+" thfk!!!!!");
-//		}
-//		int test2 = totalDistance(originalAllNodes);
-//		System.out.println(test2+ " the fking test2");
-////		originalAllNodes = allNodes;
-//		for (int o = 0; o < 3; o++) {
-//			before = totalDistance(allNodes);
-//			System.out.println(before +" before");
-//			allNodes = replaceEdge2(allNodes);
-////			allNodes = replaceEdge2(allNodes);
-//			int after = totalDistance(allNodes);
-//			System.out.println(after + " after");
-//			if (after<before){
-////				for (int i = 0; i < allNodes.size(); i++) {
-////					allNodes.set(i, tmpAllNodes.get(i));
-////				}
-////				System.out.println("hej");
-//				finalDist = totalDistance(allNodes);
-//				for (int i = 0; i < allNodes.size(); i++) {
-//					tour[i]=allNodes.get(i).getT();
-//				}		
-//			}else{
-//				System.out.println("yes?");
-//				allNodes.clear();
-//				allNodes.addAll(originalAllNodes);
-//				for (int i = 0; i < allNodes.size(); i++) {
-//					System.out.println(allNodes.get(i).getT()+" thfk");
-//				}
-//				int test = totalDistance(allNodes);
-//				System.out.println(test+" the test");
-//			}
-////			for (int j = 0; j < tour.length; j++) {
-////				System.out.println(tour[j]);
-////			}
-////			System.out.println(after);
-////			System.out.println(o);
-////			System.out.println("");
-//		}
-//		
-////		int finalDist = totalDistance(allNodes);
-//		System.out.println(finalDist);
+		totalDistance();
+		createTourList();
 		return tour;
 	}
 	
-	public static void dist(ArrayList<Node> a){
+	public static void dist(){
 		Global.cN = new ArrayList<ArrayList<Integer>>();
 		Global.indexKiller = new ArrayList<HashMap<Integer, Integer>>();
-		for (int i = 0; i < a.size(); i++) {
-			Node n1 = a.get(i);
+		for (int i = 0; i < Global.allNodes.length; i++) {
+			Node n1 = Global.allNodes[i];
 			//for (int j=1+i; j < a.size(); j++) { //calculate matrix/2
 			ArrayList<Integer> bestValue = new ArrayList<Integer>();
 			bestValue.add(Integer.MAX_VALUE);
@@ -146,8 +79,8 @@ public class Greedy{
 			bestValue.add(Integer.MAX_VALUE-5);
 			bestValue.add(Integer.MAX_VALUE-6);
 			HashMap<Integer, Integer> hash = new HashMap<Integer, Integer>();
-			for (int j = 0; j < a.size(); j++) {
-				Node n2 = a.get(j);
+			for (int j = 0; j <Global.allNodes.length; j++) {
+				Node n2 = Global.allNodes[j];
 				double x = n1.getX() - n2.getX();
 				double y = n1.getY() - n2.getY();
 				double d = Math.sqrt(Math.pow(x,2)+Math.pow(y, 2));
@@ -164,48 +97,67 @@ public class Greedy{
 			Global.indexKiller.add(hash);
 			Global.cN.add(bestValue);
 		}
-//		for (int i = 0; i < Global.cN.size(); i++) {
-//			for (int j = 0; j < 3; j++) {
-//				//select the closest neighbour
-//				System.out.print(Global.indexKiller.get(i).get(Global.cN.get(i).get(j))+" ");
-//			}
-//			System.out.println(Global.cN.get(i));
-//			System.out.println("");
-//		}
-//		Scanner user_in = new Scanner( System.in );
-//        String first_na = user_in.next();
-//		
-//		//System.out.println();
-//		//Print matrix
-//		for (int i = 0; i < Global.distanceMatrix.length; i++) {
-//			for (int j = 0; j < Global.distanceMatrix[0].length; j++) {
-//				System.out.print(Global.distanceMatrix[i][j]+" ,");
-//			}
-//			System.out.println("");
-//		}
-//		
-		/*Node first = a.get(p1);
-		Node second = a.get(p2);
-		double x = first.getX() - second.getX();
-		double y = first.getY() - second.getY();
-		double d = Math.sqrt(Math.pow(x,2)+Math.pow(y, 2));
-		d = Math.round(d);
-		int newD = (int) d;
-		for (int i = 0; i < Global.length; i++) {
-			
-		}*/
+
 		
 	}
 	
-	public static int totalDistance(ArrayList<Node> allNodes){
+	public static void totalDistance(){
 		int sum = 0;
-		for (int i = 0; i < allNodes.size(); i++) {
-			sum+=Global.distanceMatrix[allNodes.get(i).getT()][allNodes.get((i+1)%allNodes.size()).getT()];	
-//			System.out.println(Global.distanceMatrix[allNodes.get(i).getT()][allNodes.get((i+1)%allNodes.size()).getT()]);
+		int current = 0;
+		int next = 0;
+		for (int i = 0; i < Global.length; i++) {
+			current = Global.allNodes[next].getNameID();
+			next = Global.allNodes[current].getNext();
+			sum+=Global.distanceMatrix[current][next];
+			System.out.println("summa: "+sum+"  current: "+current+"  next: "+next);
+			
+			
 		}
-		//System.out.println(sum+" total distance");
-		return sum;
+		System.out.println(Global.distanceMatrix[0][7]+" matrix from 0 to 7");
+		System.out.println(sum + " sum");
+		
+			
 	}
+	
+	public static void createTourList(){
+		int[] tourList = new int[Global.length];
+		int next = 0;
+		System.out.println("THE TOUR LIST");
+//		for (int i = 0; i < Global.length; i++) {
+//			Node n = Global.allNodes[next];
+//			tourList[i] = n.getNameID(); 
+//			next = n.getNext();
+//			System.out.println(tourList[i]);
+//			
+////			System.out.println(next);
+//			next = Global.allNodes[Global.fromItoT[Global.allNodes[next].getNext()]].getNameID();
+//		}
+		for(Node n:Global.allNodes){
+			System.out.println(n.getNext()+" next     "+n.getNameID()+" Name     "+n.getPrev()+" prev");
+		}
+		HashMap<Integer,Integer> visited = new HashMap<Integer, Integer>();
+		for (int i = 0; i < Global.length; i++) {
+			System.out.println(next);
+//			if(visited.containsKey(next)){
+//				next = Global.allNodes[Global.fromItoT[next]].getPrev();
+//			}else{
+				next = Global.allNodes[Global.fromItoT[next]].getNext();				
+//			}
+//			visited.put(next, next);
+
+				
+		}
+	}
+	
+//	public static int totalDistance(){
+//		int sum = 0;
+//		for (int i = 0; i < Global.allNodes.length; i++) {
+//			sum+=Global.distanceMatrix[Global.allNodes[i].getNameID()][Global.allNodes[(i+1)%Global.length].getNameID()];	
+////			System.out.println(Global.distanceMatrix[allNodes.get(i).getT()][allNodes.get((i+1)%allNodes.size()).getT()]);
+//		}
+//		System.out.println(sum+" total distance");
+//		return sum;
+//	}
 	
 
 }
