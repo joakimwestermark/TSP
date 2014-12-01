@@ -8,35 +8,69 @@ import java.util.Scanner;
 public class Greedy{
 	
 	public static int[] findTour(){
-		int [] tour = new int[Global.length];
+//		int [] tour = new int[Global.length];
+//		boolean [] used = new boolean [Global.length];
+//		Global.fromItoT = new int[Global.allNodes.length];
+//		Arrays.fill(used, false);
+//		tour[0] = 0;
+//		used [0] = true;
+//        Global.theTour[0] = 0;
+//		for (int i = 1; i < Global.length; i++) {
+//			int best = -1; 
+//			for (int j = 0; j< Global.length; j++) {
+//				if(!used[j] && (best==-1 || Global.distanceMatrix[tour[i-1]][j] < Global.distanceMatrix[tour[i-1]][best])){
+//					best = j; 
+//				}
+//			}
+//			Global.tourIndexer.put(best, i);
+//            Global.theTour[i] = best;
+//			Global.fromItoT[best] = i;
+//			tour[i] = best;
+//			Global.allNodes[i].changeNameID(best);
+//			Global.allNodes[(i+1)%Global.length].setPrev(best);
+//			Global.allNodes[i-1].setNext(best);
+//			
+//			used [best] = true; 
+//		}
+		
+		
+		Global.newTour = new int[Global.length];
 		boolean [] used = new boolean [Global.length];
-		Global.fromItoT = new int[Global.allNodes.length];
 		Arrays.fill(used, false);
-		tour[0] = 0;
-		used [0] = true;
-        Global.theTour[0] = 0;
-		for (int i = 1; i < Global.length; i++) {
-			int best = -1; 
+		int n1 = 0;
+		int original = 0;
+		Global.theTour[0]=0;
+		for (int i = 0; i < Global.length-1; i++) {
+			int best = -1;
 			for (int j = 0; j< Global.length; j++) {
-				if(!used[j] && (best==-1 || Global.distanceMatrix[tour[i-1]][j] < Global.distanceMatrix[tour[i-1]][best])){
-					best = j; 
+				if(n1!=j){
+					if(!used[j] && (best==-1 || Global.distanceMatrix[n1][j] < Global.distanceMatrix[n1][best])){
+						best = j;
+					}
 				}
 			}
-            Global.theTour[i] = best;
-			Global.fromItoT[best] = i;
-			tour[i] = best;
-			Global.allNodes[i].changeNameID(best);
-			Global.allNodes[(i+1)%Global.length].setPrev(best);
-			Global.allNodes[i-1].setNext(best);
-			
-			used [best] = true; 
-			
-		}
+			used[n1]=true;
+//			Global.tourIndexer.put(best, i);
+			Global.newTour[n1] = best;
+			Global.theTour[i+1] = best;
 
+			n1 = best;
+		}
+		Global.newTour[n1]=original;
+		
+//		System.out.println(Arrays.toString(Global.newTour));
+//		System.out.println(Arrays.toString(Global.theTour));
+//		OPT2new.flipInTheFlip(1, 3);
+//		OPT2new.flipper(0, 8, 4, 3);
+		OPT2new.replaceEdge2();
+//		System.out.println(Arrays.toString(Global.newTour));
+//		System.out.println(Arrays.toString(Global.theTour));
+
+/*
         //****is right*****
-        /*for (int i = 0; i < Global.theTour.length; i++) {
+        for (int i = 0; i < Global.theTour.length; i++) {
             System.out.print(Global.theTour[i]+" ,");
-        }*/
+        }
 
         Global.allNodes[Global.length-1].setNext(Global.allNodes[0].getNameID()); //IS THIS OKEY?!?
 		//totalDistance();
@@ -60,7 +94,7 @@ public class Greedy{
 		for (int i = 0; i < Global.length; i++) {
 			tour[i]=Global.allNodes[i].getNameID();
 		}
-		
+*/		
 		//totalDistance();
 		return Global.theTour;
 	}
@@ -68,6 +102,8 @@ public class Greedy{
 	public static void dist(){
 		Global.cN = new ArrayList<ArrayList<Integer>>();
 		Global.indexKiller = new ArrayList<HashMap<Integer, Integer>>();
+		Global.indexKiller2 = new HashMap<Integer,HashMap<Integer, Integer>>();
+
 		for (int i = 0; i < Global.allNodes.length; i++) {
 			Node n1 = Global.allNodes[i];
 			//for (int j=1+i; j < a.size(); j++) { //calculate matrix/2
@@ -96,6 +132,7 @@ public class Greedy{
 				Global.distanceMatrix[i][j] = newD;	
 			}
 			Global.indexKiller.add(hash);
+			Global.indexKiller2.put(i, hash);
 			Global.cN.add(bestValue);
 		}
 

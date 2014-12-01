@@ -1,8 +1,5 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Main{
@@ -17,6 +14,7 @@ public class Main{
 		Global.distanceMatrix = new int[Global.length][Global.length];
 		Global.allNodes  = new Node[Global.length];
         Global.theTour = new int[Global.length];
+//        Global.tourIndexer = new HashMap<Integer, Integer>();
 		
 		for (int i = 0; i < Global.length; i++) {
 			double x = io.getDouble();
