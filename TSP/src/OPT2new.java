@@ -1,7 +1,6 @@
 import java.util.Date;
 
 public class OPT2new {
-	static Date date = new Date();
 
 	public static int getNext(int n){
 		int next = Global.newTour[n];
@@ -9,51 +8,32 @@ public class OPT2new {
 	}
 	
 	public static void flipper(int n1, int n2, int n3, int n4){
-//		int tmp [] = new int [Global.length];
-		Global.temp = new int [Global.length];
-		for (int i = 0; i < Global.length; i++) {
-//			tmp[i] = Global.newTour[i];
-			Global.temp[i] = Global.newTour[i];
+		int tmp [] = new int [Global.length];
+
+		for (int i = 0; i < Global.length; i++) { //tung operation
+			tmp[i] = Global.newTour[i];
 		}
-//		tmp[n3]=n1;
-//		tmp[n4]=n2;
-		Global.temp[n3]=n1;
-		Global.temp[n4]=n2;
-//		int six = Global.newTour[n4];
-//		tmp[six]=n4;
-//		int two = Global.newTour[six];
-//		tmp[two]=six;
-//		int one = Global.newTour[two];
-//		tmp[one]=two;
-//		int seven = Global.newTour[one];
-//		tmp[seven] = one;
-		//if int "XX" = n1, breaka och kopiera resten rakt av, all reverse är då klar.
-		//fyll sedan i de som saknas
-				
-		
+		Global.newTour[n3]=n1;
+		Global.newTour[n4]=n2;
+						
 		
 		int pos = 0;
 		int value = n4;
-		for (int i = 0; i < Global.length; i++) {	
-			pos = Global.newTour[value];
-//			tmp[pos] = value;
-			Global.temp[pos] = value;
+		for (int i = 0; i < Global.length; i++) {	 //kan råka reversa åt fel håll, dvs 99% istället för 1%
+			pos = tmp[value];
+			Global.newTour[pos] = value;
 			value = pos;
 			if(pos==n1){
 				break;
 			}
 		}
 		
-		for (int i = 0; i < Global.length; i++) {
-//			Global.newTour[i]=tmp[i];
-			Global.newTour[i]=Global.temp[i];
-		}
 		
 	}
 	public static void replaceEdge2(){
 		boolean noChange = false;
 		
-		while(!noChange && (measureTime()<1000)){
+		while(!noChange && (measureTime()<(1750))){
 			noChange = true;
 			for (int i = 0; i < Global.length-1; i++) {
 				int n1 = Global.newTour[i];
@@ -87,7 +67,7 @@ public class OPT2new {
 		return false;
 	}
 	public static long measureTime(){
-		Long time = (new Date().getTime() - date.getTime());
+		Long time = (new Date().getTime() - Main.date.getTime());
 		return time;
 	}
 }
