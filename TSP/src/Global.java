@@ -12,4 +12,6 @@ public abstract class Global {
 	static int [] newTour;
 	static ArrayList<int[]> closestN;
 	static int numberCN;
+	static int [] bestTour; 
+	static long TIME;
 }

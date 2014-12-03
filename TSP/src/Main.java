@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -6,35 +9,52 @@ import java.util.TreeMap;
 public class Main{
 
 //	static Date date = new Date();
-	static long TIME = System.currentTimeMillis();
 
 	public static void main (String [] args) throws NumberFormatException, IOException{
+		Global.TIME = 0; 
+		Global.TIME = System.currentTimeMillis();
 
 //		####KATTIO####
 		
-		Kattio io = new Kattio(System.in, System.out);
+//		Kattio io = new Kattio(System.in, System.out);
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	
-		Global.length = io.getInt();
+		Global.length = Integer.parseInt(in.readLine());
 		Global.distanceMatrix = new int[Global.length][Global.length];
 		Node [] allNodes = new Node[Global.length];
 		for (int i = 0; i < Global.length; i++) {
-			double x = io.getDouble();
-			double y = io.getDouble();
+			String xy = in.readLine();
+			String [] tmp = xy.split(" ");
+			double x = Double.parseDouble(tmp[0]);
+			double y = Double.parseDouble(tmp[1]);
 			Node n = new Node(x,y); 	
 			allNodes[i]=n; //Nodes get the same index as their nameID
 		}
 		
+//		Global.length = io.getInt();
+//		Global.distanceMatrix = new int[Global.length][Global.length];
+//		Node [] allNodes = new Node[Global.length];
+//		for (int i = 0; i < Global.length; i++) {
+//			double x = io.getDouble();
+//			double y = io.getDouble();
+//			Node n = new Node(x,y); 	
+//			allNodes[i]=n; //Nodes get the same index as their nameID
+//		}
+//		TIME = System.currentTimeMillis();
 		dist(allNodes);
 		
 		
 		Greedy.findTour();
 		int tour = 0;
 		for (int i = 0; i < Global.length; i++) {
-			io.println(Global.newTour[tour]);
-			tour = Global.newTour[tour];
+			System.out.println(Global.bestTour[tour]);
+			tour = Global.bestTour[tour];
 		}
 //		io.println(OPT2new.measureTime());
-        io.close();
+//        io.close();
+//      System.out.println(OPT2new.measureTime()+" end time");
+
 	}
 	public static void dist(Node [] allNodes){
 		for (int i = 0; i < Global.length; i++) {
