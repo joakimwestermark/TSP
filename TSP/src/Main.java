@@ -44,8 +44,8 @@ public class Main{
 //		TIME = System.currentTimeMillis();
 		dist(allNodes);
 		
-		
 		Greedy.findTour();
+		
 		int tour = 0;
 		for (int i = 0; i < Global.length; i++) {
 			System.out.println(Global.bestTour[tour]);
@@ -53,6 +53,7 @@ public class Main{
 		}
 //		io.println(OPT2new.measureTime());
 //        io.close();
+		in.close();
 //      System.out.println(OPT2new.measureTime()+" end time");
 
 	}
@@ -69,24 +70,24 @@ public class Main{
 				Global.distanceMatrix[i][j] = newD;	
 			}
 		}
-		TreeMap<Integer, Integer> theTree = new TreeMap<Integer, Integer>();
-		if(Global.length<5){
-			Global.numberCN = Global.length/2; 
-		}
-		else{
-			Global.numberCN = 8;
-		}
-		Global.closestN = new ArrayList<int []>();
-		for (int i = 0; i < Global.length; i++) {
-			Global.closestN.add(new int[Global.numberCN]);
-			for (int j = 0; j < Global.length; j++) {
-				theTree.put(Global.distanceMatrix[i][j], j);
-			}
-			theTree.pollLastEntry();
-			for (int k = 0; k < Global.numberCN-1; k++) {
-				Global.closestN.get(i)[k]= theTree.pollFirstEntry().getValue();
-			}
-			theTree.clear();
-		}
+//		TreeMap<Integer, Integer> theTree = new TreeMap<Integer, Integer>();
+//		if(Global.length<18){
+//			Global.numberCN = (int) (Global.length*0.8); 
+//		}
+//		else{
+//			Global.numberCN = 15;
+//		}
+//		Global.closestN = new ArrayList<int []>();
+//		for (int i = 0; i < Global.length; i++) {
+//			Global.closestN.add(new int[Global.numberCN]);
+//			for (int j = 0; j < Global.length; j++) {
+//				theTree.put(Global.distanceMatrix[i][j], j);
+//			}
+////			System.out.println(theTree.pollLastEntry());
+//			for (int k = 0; k < Global.numberCN; k++) {
+//				Global.closestN.get(i)[k]= theTree.pollFirstEntry().getValue();
+//			}
+//			theTree.clear();
+//		}
 	}
 }

@@ -14,4 +14,5 @@ public abstract class Global {
 	static int numberCN;
 	static int [] bestTour; 
 	static long TIME;
+	static int bestSum;
 }
