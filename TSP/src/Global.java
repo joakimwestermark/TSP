@@ -19,4 +19,7 @@ public abstract class Global {
 	static boolean shuffleCheck = false;
 	static double [] distArr;
 	static int smallestIndex;
+	static int repeater = 0;
+	static int repeater2 = 0;
+	static int reapeterIndex = 0;
 }

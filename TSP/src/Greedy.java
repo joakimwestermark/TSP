@@ -23,14 +23,16 @@ public class Greedy{
 			n1 = best;
 		}
 		Global.newTour[n1]=original;
-//		if(Global.length<50){
-//			OPT3new.replaceEdge2();			
-//		}
+		if(Global.length<150){
+			for (int i = 0; i < 3; i++) {
+				OPT3new.replaceEdge2();			
+			}
+		}
 		OPT2new.replaceEdge2();
 		OPT2new.replaceEdge2pure();
-//		if(Global.length<50){
+		if(Global.length<150){
 			OPT3new.replaceEdge2();			
-//		}
+		}
 
 	}
 }

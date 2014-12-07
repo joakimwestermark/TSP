@@ -66,7 +66,7 @@ public class OPT2new {
 //			System.out.println(measureTime()+ " the time inside while");
 //			int counter = 0;
 //			System.out.println(System.currentTimeMillis()-Global.TIME);
-			while(noChange && measureTime()<(800)){
+			while(noChange && measureTime()<(700)){
 //				counter++;
 //				if(counter%10000==0){
 //					System.out.println(counter + " counter");
@@ -125,7 +125,7 @@ public class OPT2new {
 			
 	public static void replaceEdge2pure(){
 		boolean noChange = true;
-			while(noChange && measureTime()<(1100)){
+			while(noChange && measureTime()<(1000)){
 				noChange = false;						
 				for (int i = 0; i < Global.length; i++) {
 					int n1 = Global.bestTour[i];

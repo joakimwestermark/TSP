@@ -10,10 +10,10 @@ public class OPT3new {
 		return next;
 	}
 	public static void flipper3(int n1, int n2, int n3, int n4, int n5, int n6){
-		int tmp [] = new int [Global.length];
-		int empty [] = new int [Global.length];
-		Arrays.fill(empty, -1);;
-		System.arraycopy(Global.newTour, 0, tmp, 0, Global.length);
+//		int tmp [] = new int [Global.length];
+//		int empty [] = new int [Global.length];
+//		Arrays.fill(empty, -1);;
+//		System.arraycopy(Global.newTour, 0, tmp, 0, Global.length);
 //		System.out.println("n1: "+n1+"    n2: "+n2+"    n3: "+n3+"    n4: "+n4+"    n5: "+n5+"    n6: "+n6);
 //		System.arraycopy(empty, 0, Global.newTour, 0, Global.length);
 
@@ -25,22 +25,56 @@ public class OPT3new {
 			
 		
 //		double distOne = Global.distanceMatrix[n1][n5] + Global.distanceMatrix[n4][n2] + Global.distanceMatrix[n3][n6];		
+//		double distTwo = Global.distanceMatrix[n1][n3] + Global.distanceMatrix[n2][n5] + Global.distanceMatrix[n4][n6];
 		
-		flipper(n1,n2,n3,n4);
-//		int tour = 0;
-//		for (int i = 0; i < Global.length; i++) {
-//			System.out.println(Global.newTour[tour]);
-//			tour = Global.newTour[tour];
-//		}
-		if(getNext(n3)==n1 && getNext(n6)==n5){
-			flipper(n3,n1,n6,n5);			
-		}else if(getNext(n3)==n1 && getNext(n5)==n6){
-			flipper(n3,n1,n5,n6);
-		}else if(getNext(n1)==n3 && getNext(n6)==n5){
-			flipper(n1,n3,n6,n5);
-		}else if(getNext(n1)==n3 && getNext(n5)==n6){
-			flipper(n1,n3,n5,n6);
+//		System.out.println((Global.repeater=calculate(Global.newTour))+" newTour before");
+		Global.repeater=calculate(Global.newTour);
+		if(Global.smallestIndex==1){
+//			System.out.println("nr 1");
+			flipper(n1,n2,n3,n4);
+			
+			if(getNext(n3)==n1 && getNext(n6)==n5){
+//				System.out.println("winner");
+				flipper(n3,n1,n6,n5);			
+//			}else if(getNext(n3)==n1 && getNext(n5)==n6){
+//				flipper(n3,n1,n5,n6);
+//			}else if(getNext(n1)==n3 && getNext(n6)==n5){
+//				flipper(n1,n3,n6,n5);
+			}else if(getNext(n1)==n3 && getNext(n5)==n6){
+//				System.out.println("destroyer");
+				flipper(n1,n3,n5,n6);
+			}else{
+				flipper(n3,n1,n4,n2);
+			}
+			Global.repeater2=calculate(Global.newTour);
+			Global.reapeterIndex = Global.smallestIndex;
+//			System.out.println((Global.repeater2 = calculate(Global.newTour))+" newTour after");
+			
+		}else if(Global.smallestIndex==2){
+//			System.out.println("nr 2");
+			flipper(n1,n2,n3,n4);
+			
+			if(getNext(n2)==n4 && getNext(n5)==n6){
+				flipper(n2,n4,n5,n6);			
+//			}else if(getNext(n2)==n4 && getNext(n6)==n5){
+//				flipper(n2,n4,n6,n5);
+//			}else if(getNext(n4)==n2 && getNext(n5)==n6){
+//				flipper(n4,n2,n5,n6);
+			}else if(getNext(n4)==n2 && getNext(n6)==n5){
+				flipper(n4,n2,n6,n5);
+			}else{
+				flipper(n3,n1,n4,n2);
+			}
+			Global.reapeterIndex = Global.smallestIndex;
+			Global.repeater2=calculate(Global.newTour);
 		}
+		
+		
+		
+		
+		
+		
+		
 //		System.out.println("");
 //		tour = 0;
 //		for (int i = 0; i < Global.length; i++) {
@@ -197,17 +231,18 @@ public class OPT3new {
 						for (int k = 0; k < Global.length; k++) {
 							int n5 = Global.newTour[k];
 							int n6 = getNext(n5);
-							
+							if(k>j && j>i){								
 								if(n1!=n3 && n1!=n5 && n1!=n4 && n1!=n6 && n2!=n3 && n2!=n4 && n2!=n5 && n2!= n6 && n3!=n5 && n3!=n6 && n4!=n5 && n4!=n6 && getNext(n4)!=n1 && getNext(n6)!=n1 && getNext(n4)!=n5 && getNext(n6)!=n3 && getNext(n2)!=n3 && getNext(n2)!=n5){ //byt plats på denna ifsatsen och compute
 									if(compute(n1,n2,n3,n4,n5,n6)){
 //										System.out.println("yeah");
-									flipper3(n1,n2,n3,n4,n5,n6);
-									noChange=true;
-									breaker = true;
-								}
-								if(breaker){
-									break;
-								}
+										flipper3(n1,n2,n3,n4,n5,n6);
+										noChange=true;
+										breaker = true;
+									}
+									if(breaker){
+										break;
+									}
+							}
 							}
 							if(noChange){
 								break;
@@ -244,15 +279,19 @@ public class OPT3new {
 //		double distFour = Global.distanceMatrix[n1][n4] + Global.distanceMatrix[n5][n3] + Global.distanceMatrix[n2][n6];		
 ////		
 		double distOne = Global.distanceMatrix[n1][n5] + Global.distanceMatrix[n4][n2] + Global.distanceMatrix[n3][n6];		
-		double distTwo = Global.distanceMatrix[n1][n5] + Global.distanceMatrix[n4][n2] + Global.distanceMatrix[n3][n6];		
+		double distTwo = Global.distanceMatrix[n1][n3] + Global.distanceMatrix[n2][n5] + Global.distanceMatrix[n4][n6];
+		
 		double distThree = Global.distanceMatrix[n1][n3] + Global.distanceMatrix[n2][n5] + Global.distanceMatrix[n4][n6];		
 		double distFour = Global.distanceMatrix[n1][n4] + Global.distanceMatrix[n5][n3] + Global.distanceMatrix[n2][n6];		
 
 		
 		Global.distArr = new double []{oldDistance,distOne,distTwo,distThree,distFour};
-		Global.distArr[2]+=2000;
+//		Global.distArr[2]+=2000;
 		Global.distArr[3]+=2000;
 		Global.distArr[4]+=2000;
+		if(Global.repeater==Global.repeater2 && Global.smallestIndex!=0){
+			Global.distArr[Global.reapeterIndex]+=2000;
+		}
 		
 		double smallest = Double.MAX_VALUE;
 		Global.smallestIndex = -2;
@@ -263,14 +302,25 @@ public class OPT3new {
 			}
 		}
 		
-//		System.out.println("oldDist: "+Global.distArr[0]+"     distTwo: "+Global.distArr[2]);
 		if(Global.smallestIndex!=0){
+//			System.out.println("oldDist: "+Global.distArr[0]+"     dist"+Global.smallestIndex+": "+Global.distArr[Global.smallestIndex]);
+			
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
+	public static int calculate(int[] t){
+		int sum = 0; 
+		int next = 0;
+		for (int i = 0; i < t.length; i++) {
+			sum+=Global.distanceMatrix[next][getNext(next)];
+			next = getNext(next);
+			
+		}
+		return sum; 
+	}
+
 	public static long measureTime(){
 		Long time = System.currentTimeMillis()-Global.TIME;
 		return time;
