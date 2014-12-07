@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 
 public abstract class Global {
-	public static int[][] distanceMatrix;
+	public static double[][] distanceMatrix;
 	public static int length;
 	static ArrayList <ArrayList<Integer>> cN;
 	static ArrayList <HashMap<Integer, Integer>> indexKiller;
@@ -15,4 +15,8 @@ public abstract class Global {
 	static int [] bestTour; 
 	static long TIME;
 	static int bestSum;
+	static ArrayList <int[]> tabu;
+	static boolean shuffleCheck = false;
+	static double [] distArr;
+	static int smallestIndex;
 }
